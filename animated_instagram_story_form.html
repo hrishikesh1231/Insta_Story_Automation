@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#100c18" />
+<title>Story Studio — Create your story</title>
+<style>
+  :root{--bg:#100c18;--panel:#1a1425;--muted:#b7acc7;--text:#fff9ff;--pink:#ff4f9a;--purple:#8b5cf6;--line:#ffffff1c}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 5%,#51204e 0,transparent 35%),radial-gradient(ellipse at 90% 80%,#25205d 0,transparent 38%),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);overflow-x:hidden}
+  body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.17;background-image:radial-gradient(#fff 0.7px,transparent .7px);background-size:22px 22px}
+  .shell{position:relative;width:min(1080px,94vw);margin:auto;padding:48px 0 56px}
+  header{text-align:center;margin-bottom:34px;animation:rise .7s both}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border:1px solid #ffffff25;border-radius:999px;color:#f3c7e4;background:#ffffff08;font-size:12px;letter-spacing:.13em;text-transform:uppercase}
+  .spark{color:#ff83bd;font-size:17px}
+  h1{font-size:clamp(34px,5vw,57px);line-height:1.04;letter-spacing:-.045em;margin:20px 0 12px}
+  h1 span{background:linear-gradient(100deg,#ff84b9,#c4a2ff 65%,#8edcff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);margin:0 auto;max-width:540px;line-height:1.65}
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,.83fr);gap:25px;align-items:start}
+  .card{border:1px solid var(--line);background:linear-gradient(145deg,#ffffff0c,#ffffff04);box-shadow:0 24px 80px #0003;backdrop-filter:blur(18px);border-radius:25px;overflow:hidden;animation:rise .8s .08s both}
+  .form-card{padding:27px}
+  .card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+  h2{font-size:19px;margin:0;letter-spacing:-.02em}
+  .step{font-size:12px;color:#d5c6e4;background:#ffffff0c;padding:7px 10px;border-radius:9px}
+  label{display:block;font-size:13px;color:#e8dff1;margin:17px 0 8px}
+  input,textarea,select{font:inherit;color:var(--text);width:100%;border:1px solid #ffffff22;background:#110d1b99;border-radius:12px;padding:13px 14px;outline:none;transition:border .2s,box-shadow .2s,transform .2s}
+  input:focus,textarea:focus,select:focus{border-color:#c084fc;box-shadow:0 0 0 3px #a855f722}
+  input::placeholder,textarea::placeholder{color:#887d98}
+  textarea{resize:vertical;min-height:95px}
+  select option{background:#1a1425}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  .hint{color:#a99bb8;font-size:11px;margin-top:7px;line-height:1.5}
+  .primary,.insta{width:100%;border:0;border-radius:13px;padding:14px 17px;color:white;font-weight:750;font-size:14px;cursor:pointer;transition:transform .2s,filter .2s,box-shadow .2s}
+  .primary{margin-top:23px;background:linear-gradient(100deg,#f0448a,#9a5af6);box-shadow:0 10px 28px #a33b9b40}
+  .primary:hover,.insta:hover{transform:translateY(-2px);filter:brightness(1.08)}
+  .primary:active,.insta:active{transform:scale(.99)}
+  .preview-card{padding:23px;animation-delay:.16s}
+  .preview-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
+  .live{font-size:11px;color:#a7f3d0;display:flex;align-items:center;gap:6px}
+  .live:before{content:"";width:6px;height:6px;background:#34d399;border-radius:50%;box-shadow:0 0 10px #34d399}
+  .story-wrap{width:min(100%,310px);margin:auto;padding:7px;border-radius:25px;background:linear-gradient(140deg,#ff7ab6,#a855f7,#61d8e8);box-shadow:0 18px 55px #0005}
+  .story{aspect-ratio:9/16;border-radius:20px;overflow:hidden;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px 22px;background:radial-gradient(ellipse at 20% 20%,#f88bc9 0,transparent 34%),radial-gradient(ellipse at 80% 75%,#7266f6 0,transparent 38%),linear-gradient(150deg,#32174f,#130f2b 75%);isolation:isolate}
+  .story:before,.story:after{content:"";position:absolute;border:1px solid #ffffff25;border-radius:50%;width:240px;height:240px;z-index:-1}
+  .story:before{top:-120px;right:-100px}.story:after{bottom:-145px;left:-115px;width:280px;height:280px}
+  .story-brand{position:absolute;top:22px;left:20px;right:20px;display:flex;align-items:center;gap:8px;text-align:left;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#ffffffd9}
+  .brand-dot{width:27px;height:27px;border-radius:9px;background:linear-gradient(135deg,#ff73b7,#9c73ff);display:grid;place-items:center;font-size:14px}
+  .story-kicker{font-size:10px;letter-spacing:.23em;text-transform:uppercase;color:#ffd2ea;margin-bottom:16px}
+  .story-name{font-size:clamp(27px,4vw,38px);line-height:1.06;letter-spacing:-.045em;font-weight:850;overflow-wrap:anywhere;max-width:100%;white-space:pre-wrap}
+  .story-message{font-size:13px;line-height:1.6;color:#f1e8ff;margin-top:17px;overflow-wrap:anywhere;white-space:pre-wrap;max-width:100%}
+  .story-divider{height:2px;width:38px;border-radius:9px;background:linear-gradient(90deg,#ff8ec5,#b9a2ff);margin:22px auto 15px}
+  .story-footer{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#ffffffa8}
+  .success{display:none;margin-top:22px;padding:17px;border:1px solid #34d39945;background:#10b98112;border-radius:15px;animation:rise .4s both}
+  .success.show{display:block}
+  .success-title{display:flex;align-items:center;gap:9px;font-weight:750;font-size:15px}
+  .check{width:25px;height:25px;border-radius:50%;background:#10b98124;color:#6ee7b7;display:grid;place-items:center}
+  .success p{font-size:12px;line-height:1.6;color:#c7bdd4;margin:9px 0 14px}
+  .insta{background:linear-gradient(100deg,#f9a03f,#ee2a7b 50%,#8a3ffc);display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 9px 24px #e52c7930}
+  .insta svg{width:19px;height:19px}
+  .tiny-note{font-size:10px;color:#a99bb8;line-height:1.55;margin:10px 2px 0}
+  .status{min-height:18px;color:#f9a8d4;font-size:12px;margin-top:8px}
+  .footer{text-align:center;color:#857992;font-size:11px;margin-top:25px}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @media(max-width:760px){.shell{padding:30px 0}.layout{grid-template-columns:1fr;max-width:520px;margin:auto}.preview-card{grid-row:2}.form-card{padding:22px}.story-wrap{width:min(75%,290px)}h1{margin-top:16px}}
+  @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header>
+    <div class="eyebrow"><span class="spark">✦</span> YOUR MOMENT, YOUR STORY</div>
+    <h1>Make it <span>story-worthy.</span></h1>
+    <p class="sub">A few details. A little magic. Create a personalised Story card and get it ready to share on Instagram.</p>
+  </header>
+
+  <div class="layout">
+    <section class="card form-card">
+      <div class="card-top"><h2>Create your card</h2><span class="step">STEP 01 / 01</span></div>
+      <form id="storyForm">
+        <label for="name">Your name *</label>
+        <input id="name" name="name" maxlength="45" placeholder="What should we call you?" required autocomplete="name" />
+        <label for="headline">Story headline *</label>
+        <input id="headline" name="headline" maxlength="70" placeholder="e.g. A little win worth celebrating" required />
+        <label for="message">Your message</label>
+        <textarea id="message" name="message" maxlength="220" placeholder="Add a thought, a memory, or a little announcement…"></textarea>
+        <div class="row">
+          <div><label for="mood">Choose a mood</label>
+            <select id="mood"><option value="dream">Dreamy</option><option value="celebrate">Celebrate</option><option value="sunset">Sunset</option><option value="midnight">Midnight</option></select>
+          </div>
+          <div><label for="tag">Your @handle (optional)</label><input id="tag" maxlength="30" placeholder="@yourhandle" /></div>
+        </div>
+        <p class="hint">Your text updates the Story preview live. Keep personal information out of anything you don't want to share publicly.</p>
+        <button class="primary" type="submit">✦ &nbsp; Create my Story card</button>
+      </form>
+      <div class="success" id="success" aria-live="polite">
+        <div class="success-title"><span class="check">✓</span> Your card is ready!</div>
+        <p>Your details have been added to the Story design. Tap below to try sharing it to Instagram.</p>
+        <button class="insta" id="shareBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="18" cy="6" r="1" fill="currentColor" stroke="none"/></svg>
+          Add to Instagram Story
+        </button>
+        <div class="tiny-note">On a supported phone, this opens the sharing flow. If Instagram doesn't appear, save the image and upload it from Instagram Stories manually.</div>
+        <div class="status" id="status" role="status"></div>
+      </div>
+    </section>
+
+    <section class="card preview-card">
+      <div class="preview-head"><h2>Live preview</h2><span class="live">LIVE</span></div>
+      <div class="story-wrap">
+        <div class="story" id="storyCard">
+          <div class="story-brand"><span class="brand-dot">✦</span><span>YOUR STORY STUDIO</span></div>
+          <div class="story-kicker">A MOMENT TO REMEMBER</div>
+          <div class="story-name" id="previewHeadline">Your next chapter<br>starts here.</div>
+          <div class="story-message" id="previewMessage">Your words, your moment. Make it yours.</div>
+          <div class="story-divider"></div>
+          <div class="story-footer" id="previewFooter">MADE WITH A LITTLE MAGIC</div>
+        </div>
+      </div>
+      <p class="hint" style="text-align:center;margin-top:16px">Portrait 9:16 · Instagram Story format</p>
+    </section>
+  </div>
+  <div class="footer">A tiny canvas for your big moments ✦</div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const form = $("storyForm");
+const themes = {
+  dream: ["radial-gradient(ellipse at 20% 20%,#f88bc9 0,transparent 34%),radial-gradient(ellipse at 80% 75%,#7266f6 0,transparent 38%),linear-gradient(150deg,#32174f,#130f2b 75%)", "#ffd2ea"],
+  celebrate: ["radial-gradient(ellipse at 15% 15%,#ffb84d 0,transparent 35%),radial-gradient(ellipse at 85% 80%,#ff4e91 0,transparent 40%),linear-gradient(150deg,#4d1745,#1b1030 75%)", "#ffe4a8"],
+  sunset: ["radial-gradient(ellipse at 20% 15%,#ffbc8b 0,transparent 35%),radial-gradient(ellipse at 85% 80%,#f04b86 0,transparent 42%),linear-gradient(150deg,#58234c,#20102d 75%)", "#ffe0cb"],
+  midnight: ["radial-gradient(ellipse at 20% 20%,#5274db 0,transparent 35%),radial-gradient(ellipse at 80% 75%,#7542b8 0,transparent 38%),linear-gradient(150deg,#17264e,#0b1025 75%)", "#c9d9ff"]
+};
+function updatePreview() {
+  const headline = $("headline").value.trim();
+  const name = $("name").value.trim();
+  const message = $("message").value.trim();
+  $("previewHeadline").textContent = headline || "Your next chapter\nstarts here.";
+  $("previewMessage").textContent = message || (name ? `A moment made by ${name}.` : "Your words, your moment. Make it yours.");
+  $("previewFooter").textContent = $("tag").value.trim() || (name ? `MADE BY ${name}` : "MADE WITH A LITTLE MAGIC");
+  const [background, accent] = themes[$("mood").value];
+  $("storyCard").style.background = background;
+  $("storyCard").querySelector(".story-kicker").style.color = accent;
+}
+["name","headline","message","tag","mood"].forEach(id => $(id).addEventListener("input", updatePreview));
+$("mood").addEventListener("change", updatePreview);
+
+function drawStoryImage() {
+  // Render a clean 1080x1920 shareable card with canvas.
+  const canvas = document.createElement("canvas");
+  canvas.width = 1080; canvas.height = 1920;
+  const ctx = canvas.getContext("2d");
+  const mood = $("mood").value;
+  const palettes = {
+    dream: ["#32174f","#130f2b","#f88bc9","#7266f6","#ffd2ea"],
+    celebrate: ["#4d1745","#1b1030","#ffb84d","#ff4e91","#ffe4a8"],
+    sunset: ["#58234c","#20102d","#ffbc8b","#f04b86","#ffe0cb"],
+    midnight: ["#17264e","#0b1025","#5274db","#7542b8","#c9d9ff"]
+  }[mood];
+  const [base1,base2,glow1,glow2,accent] = palettes;
+  const bg = ctx.createLinearGradient(0,0,1080,1920); bg.addColorStop(0,base1); bg.addColorStop(1,base2); ctx.fillStyle=bg; ctx.fillRect(0,0,1080,1920);
+  function glow(x,y,r,color){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,color);g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(0,0,1080,1920)}
+  glow(180,260,650,glow1+"bb"); glow(920,1530,700,glow2+"aa");
+  ctx.strokeStyle="#ffffff25";ctx.lineWidth=3;ctx.beginPath();ctx.arc(1000,100,310,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(70,1840,370,0,Math.PI*2);ctx.stroke();
+  // Header
+  ctx.fillStyle="#ffffff";ctx.beginPath();ctx.roundRect(92,105,74,74,22);ctx.fill();
+  const logo=ctx.createLinearGradient(92,105,166,179);logo.addColorStop(0,"#ff73b7");logo.addColorStop(1,"#9c73ff");ctx.fillStyle=logo;ctx.beginPath();ctx.roundRect(92,105,74,74,22);ctx.fill();
+  ctx.fillStyle="#fff";ctx.font="bold 43px Arial";ctx.textAlign="center";ctx.fillText("✦",129,155);
+  ctx.fillStyle="#ffffffd9";ctx.font="600 28px Arial";ctx.textAlign="left";ctx.fillText("YOUR STORY STUDIO",190,151);
+  ctx.textAlign="center";ctx.fillStyle=accent;ctx.font="600 27px Arial";ctx.letterSpacing="7px";ctx.fillText("A MOMENT TO REMEMBER",540,650);ctx.letterSpacing="0px";
+  const headline=$("headline").value.trim()||"Your next chapter starts here.";
+  const message=$("message").value.trim()||`A moment made by ${$("name").value.trim()}.`;
+  function wrap(text,maxWidth,font){ctx.font=font;const words=text.split(/\s+/);const lines=[];let line="";for(const word of words){const test=line?line+" "+word:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);return lines}
+  const headlineFont="bold 94px Arial";
+  let lines=wrap(headline,850,headlineFont);if(lines.length>4)lines=[...lines.slice(0,3),lines.slice(3).join(" ")];
+  ctx.font=headlineFont;ctx.fillStyle="#fff9ff";ctx.textAlign="center";ctx.shadowColor="#00000030";ctx.shadowBlur=20;
+  let y=850-(lines.length-1)*55;lines.forEach(line=>{ctx.fillText(line,540,y,900);y+=112});ctx.shadowBlur=0;
+  const msgLines=wrap(message,780,"36px Arial").slice(0,5);ctx.font="36px Arial";ctx.fillStyle="#f1e8ff";y+=65;msgLines.forEach(line=>{ctx.fillText(line,540,y,820);y+=56});
+  const divY=Math.min(y+70,1570);const dg=ctx.createLinearGradient(500,0,580,0);dg.addColorStop(0,"#ff8ec5");dg.addColorStop(1,"#b9a2ff");ctx.fillStyle=dg;ctx.beginPath();ctx.roundRect(500,divY,80,6,3);ctx.fill();
+  ctx.fillStyle="#ffffffa8";ctx.font="600 25px Arial";ctx.letterSpacing="4px";ctx.fillText(($("tag").value.trim()||`MADE BY ${$("name").value.trim()}`).toUpperCase(),540,divY+70,850);ctx.letterSpacing="0px";
+  return new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
+}
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  updatePreview();
+  $("success").classList.add("show");
+  $("status").textContent = "Ready to share. Your Story image will be created when you tap the button.";
+  $("success").scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+$("shareBtn").addEventListener("click", async () => {
+  const btn=$("shareBtn"), status=$("status");
+  btn.disabled=true; btn.style.opacity=".75"; status.textContent="Preparing your Story image…";
+  try {
+    const blob=await drawStoryImage();
+    if(!blob) throw new Error("Image could not be created.");
+    const file=new File([blob],"my-instagram-story.png",{type:"image/png"});
+    // Try to hand the generated image directly to Instagram's Story composer.
+    // Instagram's iOS/Android app links alone cannot attach a web-created image;
+    // the OS share sheet is the supported browser fallback.
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile && navigator.canShare && navigator.canShare({files:[file]})) {
+      // Invoke the native share sheet with the image. On devices where Instagram
+      // is a share target, selecting it should pass the image onward.
+      await navigator.share({files:[file],title:"Share to Instagram Story"});
+      status.textContent = "Choose Instagram in the sharing panel. If Instagram Story isn't offered, your browser/OS doesn't support direct hand-off from this page.";
+    } else if (isMobile) {
+      // This opens the Instagram Story camera/editor, but a browser cannot attach
+      // the generated PNG to that screen via a URL scheme alone.
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");a.href=url;a.download="my-instagram-story.png";document.body.appendChild(a);a.click();a.remove();
+      status.textContent = "Opening Instagram Stories. Note: this browser can't pass the generated image directly; Instagram may open without it. Use a native app/share integration for automatic image hand-off.";
+      setTimeout(()=>{ window.location.href="instagram://story-camera"; },250);
+      setTimeout(()=>URL.revokeObjectURL(url),60000);
+    } else {
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");a.href=url;a.download="my-instagram-story.png";document.body.appendChild(a);a.click();a.remove();
+      status.textContent = "Direct Story sharing requires a phone and a supported Instagram share target. Open this page on your phone to test it.";
+      setTimeout(()=>URL.revokeObjectURL(url),60000);
+    }
+  } catch(err) {
+    if(err && err.name==="AbortError") status.textContent="Sharing cancelled. Your form and preview are still here.";
+    else {
+      status.textContent="Direct image sharing isn't available in this browser. Download the Story image and upload it in Instagram.";
+      try {
+        const blob=await drawStoryImage(), url=URL.createObjectURL(blob), a=document.createElement("a");
+        a.href=url;a.download="my-instagram-story.png";a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
+      } catch(_) {}
+    }
+  } finally {btn.disabled=false;btn.style.opacity="1";}
+});
+updatePreview();
+</script>
+</body>
+</html>
